@@ -1,0 +1,70 @@
+
+================================================================================
+三情绪AU特征分析报告
+日期: 2025-02-17
+================================================================================
+
+1. 数据概况
+-----------
+情绪类型: 悲伤、风景(中性)、正性
+数据来源: OpenFace 2.0 AU强度值
+
+样本量:
+  • 悲伤: 9768 帧
+  • 风景: 1809 帧  
+  • 正性: 3615 帧
+
+2. 核心发现
+-----------
+最具区分度的AU (按F值排序):
+  10. AU14_r  : F=  9236.8, p=0.00e+00 ***
+  9. AU12_r  : F=  7422.0, p=0.00e+00 ***
+  8. AU10_r  : F=  2890.6, p=0.00e+00 ***
+  6. AU07_r  : F=  2243.7, p=0.00e+00 ***
+  3. AU04_r  : F=  2230.8, p=0.00e+00 ***
+
+3. 情绪特异性模式
+-----------------
+悲伤情绪特征:
+  • AU04 (眉毛下压): 最高激活
+  • AU07 (眼睑收紧): 显著高值
+  • AU10 (上唇提升): 中等激活
+
+正性情绪特征:
+  • AU12 (嘴角提升): 最高区分度
+  • AU06 (脸颊提升): 协同激活
+  • AU14 (嘴角下压): 独特激活
+
+中性(风景)特征:
+  • 所有AU强度普遍较低
+  • AU12强度介于悲伤和正性之间
+
+4. 输出文件清单
+---------------
+heatmaps/
+  - heatmap_悲伤.png
+  - heatmap_风景.png
+  - heatmap_正性.png
+  - heatmap_all_emotions_comparison.png
+  - heatmap_sad_vs_positive_diff.png
+
+barplots/
+  - barplot_au_mean_comparison.png
+  - barplot_key_au_comparison.png
+
+boxplots/
+  - boxplot_key_au_distribution.png
+
+radar/
+  - radar_emotion_profile.png
+
+time_series/
+  - timeseries_AU12_r.png
+  - timeseries_AU04_r.png
+  - timeseries_AU06_r.png
+
+statistics/
+  - statistics_anova_f_values.png
+  - au_emotion_statistics.csv
+
+================================================================================
