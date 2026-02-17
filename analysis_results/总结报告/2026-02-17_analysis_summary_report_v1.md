@@ -183,25 +183,50 @@
 
 ## 8. 分析产出清单
 
-### 生成的分析脚本（8个）
+### 生成的分析脚本（15个，已清理旧版）
+
+#### 核心分析脚本（8个）
 1. `analyze_sadness_reorganized.py` - 悲伤情绪性别对比
 2. `analyze_neutral_reorganized.py` - 中性情绪性别对比
 3. `analyze_positive_reorganized.py` - 积极情绪性别对比
 4. `cross_emotion_analysis.py` - 跨情绪综合对比
-5. `au_time_series_v2.py` - AU时间序列轨迹
+5. `au_time_series_v2.py` - AU时间序列轨迹（修正版）
 6. `analyze_female_patients_cross_emotion.py` - 女性患者跨情绪
 7. `analyze_male_patients_cross_emotion.py` - 男性患者跨情绪
 8. `analyze_patient_control_sadness_corrected.py` - 患者-对照组对比（修正版）
 
-### 生成的结果目录（8个）
-- `2025-02-17_悲伤情绪_性别对比/`
-- `2025-02-17_中性情绪_性别对比/`
-- `2026-02-17_积极情绪_性别对比/`
-- `2026-02-17_跨情绪综合对比/`
-- `2026-02-17_AU时间轨迹分析_v2/`
-- `2026-02-17_女性患者跨情绪分析/`
-- `2026-02-17_男性患者跨情绪分析/`
-- `2026-02-17_患者对照组对比_悲伤情绪_修正版/`
+#### 面部活动性与高级分析（2个）
+9. `calculate_facial_activity_index.py` - 面部活动性指数（AD方案核心指标）
+10. `ad_mediation_analysis.py` - 中介效应分析框架
+
+#### 相关矩阵生成（4个）
+11. `generate_correlation_heatmaps.py` - AU相关矩阵生成
+12. `generate_female_correlation_heatmaps.py` - 女性患者相关矩阵
+13. `generate_neutral_correlation_heatmaps.py` - 中性情绪相关矩阵
+14. `generate_positive_correlation_heatmaps.py` - 积极情绪相关矩阵
+
+#### 工具脚本（1个）
+15. `data_visualization.py` - 通用数据可视化
+
+### 生成的结果目录（10个，已清理旧版错误结果）
+
+#### 基础情绪对比（3个）
+- `2025-02-17_悲伤情绪_性别对比/` - 悲伤情绪2M+1F对比
+- `2025-02-17_中性情绪_性别对比/` - 中性情绪2M+1F对比
+- `2026-02-17_积极情绪_性别对比/` - 积极情绪2M+1F对比
+
+#### 跨情绪与患者分析（4个）
+- `2026-02-17_跨情绪综合对比/` - 三情绪综合对比分析
+- `2026-02-17_AU时间轨迹分析_v2/` - 时间序列轨迹（修正版）
+- `2026-02-17_女性患者跨情绪分析/` - F1/F2/F3跨情绪
+- `2026-02-17_男性患者跨情绪分析/` - M1/M2/M3跨情绪
+
+#### 患者对照与AD指标（2个）
+- `2026-02-17_患者对照组对比_悲伤情绪_修正版/` - 修正版患者vs对照
+- `2026-02-17_面部活动性指数分析/` - AD方案面部活动性指标
+
+#### 总结报告（1个）
+- `总结报告/` - 完整分析总结
 
 ---
 
@@ -351,6 +376,43 @@
 
 ---
 
+---
+
+## 附录：数据清理记录
+
+### 已删除的旧版/错误脚本（9个）
+以下脚本因版本过时或基于错误数据映射，已删除：
+
+| 脚本名称 | 删除原因 | 替代脚本 |
+|----------|----------|----------|
+| `analyze_sadness_fixed.py` | 旧版，功能已被取代 | `analyze_sadness_reorganized.py` |
+| `analyze_sadness_gender.py` | 旧版，功能已被取代 | `analyze_sadness_reorganized.py` |
+| `analyze_positive_simple.py` | 简化版，功能不完整 | `analyze_positive_reorganized.py` |
+| `au_time_series_analysis.py` | 旧版，存在列名处理问题 | `au_time_series_v2.py` |
+| `cross_emotion_patient_analysis.py` | 旧版，功能已被取代 | `cross_emotion_analysis.py` |
+| `patient_control_comparison.py` | **错误版本**，文件映射错误 | `analyze_patient_control_sadness_corrected.py` |
+| `three_emotion_analysis.py` | 早期版本 | `cross_emotion_analysis.py` |
+| `generate_positive_corr_simple.py` | 简化版 | `generate_positive_correlation_heatmaps.py` |
+| `generate_separate_plots.py` | 早期版本 | 各`analyze_*.py` |
+
+### 已删除的旧版/错误结果目录（5个）
+以下结果目录因基于错误分析脚本或已被新版取代，已删除：
+
+| 目录名称 | 删除原因 | 替代目录 |
+|----------|----------|----------|
+| `2025-02-17_AU_emotion_analysis/` | 早期版本 | `2025-02-17_悲伤情绪_性别对比/` 等 |
+| `2026-02-17_AU时间轨迹分析/` | 旧版，列名处理问题 | `2026-02-17_AU时间轨迹分析_v2/` |
+| `2026-02-17_患者对照组对比/` | **错误版本**，文件映射错误 | `2026-02-17_患者对照组对比_悲伤情绪_修正版/` |
+| `2026-02-17_患者对照组对比_悲伤情绪/` | **错误版本**，文件映射错误 | `2026-02-17_患者对照组对比_悲伤情绪_修正版/` |
+| `2026-02-17_跨情绪患者分析/` | 旧版，功能已被取代 | `analyze_female/male_patients_cross_emotion.py` 输出 |
+
+### 修正历史
+- **2026-02-17 21:20**: 发现并修正文件映射错误，重新分析患者-对照组对比
+- **2026-02-17 21:25**: 清理9个旧版脚本，保留15个有效脚本
+- **2026-02-17 21:26**: 清理5个旧版/错误结果目录，保留10个有效结果目录
+
+---
+
 **报告生成时间**: 2026年2月17日  
 **分析师**: 超级小龙虾 🦞  
-**版本**: v2.0（含AD方案框架后续建议）
+**版本**: v2.1（已清理旧版脚本和错误结果）

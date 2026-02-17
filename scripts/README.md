@@ -1,35 +1,38 @@
 # 分析脚本目录
 
 **整理日期**: 2026年2月17日  
-**脚本总数**: 24个  
-**总大小**: ~350KB
+**脚本总数**: 15个（已清理旧版）  
 
 ---
 
 ## 核心分析脚本（推荐使用）
 
-### 1. 情绪对比分析
+### 1. 情绪对比分析（对照组）
 | 脚本名称 | 功能 | 输出 |
 |----------|------|------|
 | `analyze_sadness_reorganized.py` | 悲伤情绪性别对比（2M+1F） | 热图、条形图、统计表 |
 | `analyze_neutral_reorganized.py` | 中性情绪性别对比 | 热图、条形图、统计表 |
 | `analyze_positive_reorganized.py` | 积极情绪性别对比 | 热图、条形图、统计表 |
-| `cross_emotion_analysis.py` | 跨情绪综合对比（悲伤vs中性vs积极） | 综合对比热图、雷达图 |
 
-### 2. 患者跨情绪分析
+### 2. 跨情绪综合对比
+| 脚本名称 | 功能 | 输出 |
+|----------|------|------|
+| `cross_emotion_analysis.py` | 跨情绪综合对比（悲伤vs中性vs积极） | 综合对比热图、雷达图、轨迹图 |
+
+### 3. 患者跨情绪分析
 | 脚本名称 | 功能 | 输出 |
 |----------|------|------|
 | `analyze_female_patients_cross_emotion.py` | 女性患者F1/F2/F3跨情绪分析 | 9张相关矩阵+3张对比热图 |
 | `analyze_male_patients_cross_emotion.py` | 男性患者M1/M2/M3跨情绪分析 | 9张相关矩阵+3张对比热图 |
 | `analyze_patient_control_sadness_corrected.py` | 患者vs对照组悲伤对比（修正版） | 差异条形图、对比热图 |
 
-### 3. 时间序列与动态分析
+### 4. 时间序列与动态分析
 | 脚本名称 | 功能 | 输出 |
 |----------|------|------|
-| `au_time_series_v2.py` | AU时间序列轨迹分析 | 轨迹图、Duchenne微笑分析 |
+| `au_time_series_v2.py` | AU时间序列轨迹分析（修正版） | 轨迹图、Duchenne微笑分析 |
 | `calculate_facial_activity_index.py` | 面部活动性指数（AD方案核心指标） | 活动性对比图、复杂度分析 |
 
-### 4. 相关矩阵热图
+### 5. 相关矩阵热图
 | 脚本名称 | 功能 | 输出 |
 |----------|------|------|
 | `generate_correlation_heatmaps.py` | 生成17×17 AU相关矩阵 | RdBu_r色图、NaN处理 |
@@ -37,32 +40,11 @@
 | `generate_neutral_correlation_heatmaps.py` | 中性情绪相关矩阵 | 对照组+患者组 |
 | `generate_positive_correlation_heatmaps.py` | 积极情绪相关矩阵 | 对照组+患者组 |
 
----
-
-## 工具脚本
-
-| 脚本名称 | 功能 | 备注 |
-|----------|------|------|
-| `data_visualization.py` | 通用数据可视化 | 支持CSV/Excel输入 |
-| `ad_mediation_analysis.py` | 中介效应分析 | Baron & Kenny + Bootstrap |
-
----
-
-## 已弃用/旧版本脚本
-
-以下脚本为开发过程中版本，供参考：
-
-| 脚本名称 | 状态 | 替代脚本 |
-|----------|------|----------|
-| `analyze_sadness_fixed.py` | ❌ 旧版 | `analyze_sadness_reorganized.py` |
-| `analyze_sadness_gender.py` | ❌ 旧版 | `analyze_sadness_reorganized.py` |
-| `analyze_positive_simple.py` | ❌ 简化版 | `analyze_positive_reorganized.py` |
-| `au_time_series_analysis.py` | ❌ 旧版 | `au_time_series_v2.py` |
-| `cross_emotion_patient_analysis.py` | ❌ 旧版 | `cross_emotion_analysis.py` |
-| `patient_control_comparison.py` | ❌ 错误版本 | `analyze_patient_control_sadness_corrected.py` |
-| `three_emotion_analysis.py` | ❌ 早期版本 | `cross_emotion_analysis.py` |
-| `generate_separate_plots.py` | ❌ 早期版本 | 各`analyze_*.py` |
-| `generate_positive_corr_simple.py` | ❌ 简化版 | `generate_positive_correlation_heatmaps.py` |
+### 6. 工具脚本
+| 脚本名称 | 功能 |
+|----------|------|
+| `data_visualization.py` | 通用数据可视化（支持CSV/Excel输入） |
+| `ad_mediation_analysis.py` | 中介效应分析（Baron & Kenny + Bootstrap） |
 
 ---
 
@@ -100,4 +82,25 @@ pip install pandas numpy matplotlib seaborn scipy
 
 ---
 
-**最后更新**: 2026-02-17
+## 数据文件映射
+
+分析脚本使用以下文件映射（已验证）：
+
+**对照组**:
+- 悲伤: M1(file_3), M2(file_4), F1(file_5)
+- 中性: M1(file_18), M2(file_19), F1(file_20)
+- 积极: M1(file_21), M2(file_22), F1(file_23)
+
+**男患者**:
+- 悲伤: M1(file_27), M2(file_28), M3(file_29)
+- 中性: M1(file_30), M2(file_31), M3(file_32)
+- 积极: M1(file_24), M2(file_25), M3(file_26)
+
+**女患者**:
+- F1: file_33(中性-不完整), file_36(积极), file_39(悲伤)
+- F2: file_34(中性), file_37(积极), file_40(悲伤)
+- F3: file_35(中性), file_38(积极), file_41(悲伤)
+
+---
+
+**最后更新**: 2026-02-17（已清理旧版脚本）
