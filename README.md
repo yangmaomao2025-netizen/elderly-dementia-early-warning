@@ -34,6 +34,8 @@
 │   ├── analyze_sadness_reorganized.py          # 悲伤情绪分析
 │   ├── analyze_neutral_reorganized.py          # 中性情绪分析
 │   ├── analyze_positive_reorganized.py         # 积极情绪分析
+│   ├── analyze_m2_three_emotions.py            # M2三情绪对比
+│   ├── analyze_f1_three_emotions.py            # F1三情绪对比
 │   ├── cross_emotion_analysis.py               # 跨情绪综合
 │   ├── analyze_female_patients_cross_emotion.py    # 女性患者
 │   ├── analyze_male_patients_cross_emotion.py      # 男性患者
@@ -49,6 +51,9 @@
 ├── analysis_results/                  # 分析结果（10个目录，已清理旧版错误结果）
 │   ├── 总结报告/
 │   │   └── 2026-02-17_analysis_summary_report_v1.md
+│   ├── 2026-02-18_M2_三种情绪对比/             # M2对照组三情绪对比
+│   ├── 2026-02-18_F1_三种情绪对比/             # F1对照组三情绪对比
+│   ├── 2025-02-17_M1_三种情绪对比/             # M1对照组三情绪对比（早期分析）
 │   ├── 2026-02-17_面部活动性指数分析/          # AD方案核心指标
 │   ├── 2026-02-17_男性患者跨情绪分析/          # M1/M2/M3跨情绪
 │   ├── 2026-02-17_女性患者跨情绪分析/          # F1/F2/F3跨情绪
