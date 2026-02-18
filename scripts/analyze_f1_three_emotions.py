@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 F1对照组三种情绪对比分析
-分析F1在悲伤、中性、积极三种情绪下的AU特征差异
+参照M1_三种情绪对比的完整目录结构和图表生成
 """
 
 import pandas as pd
@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
+from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -65,199 +66,306 @@ def analyze_f1_cross_emotion():
     print("\n各情绪AU均值:")
     print(results_df.round(3))
     
-    # 计算跨情绪差异
-    print("\n跨情绪差异分析:")
-    print(f"悲伤 vs 中性: {(results_df.loc['悲伤'] - results_df.loc['中性']).abs().mean():.3f} (平均绝对差异)")
-    print(f"悲伤 vs 积极: {(results_df.loc['悲伤'] - results_df.loc['积极']).abs().mean():.3f} (平均绝对差异)")
-    print(f"中性 vs 积极: {(results_df.loc['中性'] - results_df.loc['积极']).abs().mean():.3f} (平均绝对差异)")
-    
     return emotion_data, results_df
 
-def create_visualizations(emotion_data, results_df, output_dir):
-    """创建可视化"""
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+def create_barplots(emotion_data, results_df, output_dir):
+    """创建条形图"""
+    barplots_dir = Path(output_dir) / 'barplots'
+    barplots_dir.mkdir(exist_ok=True)
     
-    # 1. 三情绪AU均值热图
-    fig, ax = plt.subplots(figsize=(14, 4))
-    sns.heatmap(results_df.T, annot=True, fmt='.2f', cmap='RdYlBu_r', 
-                center=0, ax=ax, cbar_kws={'label': 'AU Activation'})
-    ax.set_title('F1对照组 - 三种情绪AU激活热图', fontsize=14)
-    ax.set_xlabel('情绪类型')
-    ax.set_ylabel('Action Units')
+    # 1. AU均值对比条形图
+    fig, ax = plt.subplots(figsize=(16, 6))
+    x = np.arange(len(au_columns))
+    width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+    
+    for idx, emotion in enumerate(['悲伤', '中性', '积极']):
+        values = results_df.loc[emotion].values
+        ax.bar(x + idx*width, values, width, label=emotion, color=colors[idx])
+    
+    ax.set_xlabel('Action Units', fontsize=12)
+    ax.set_ylabel('激活强度', fontsize=12)
+    ax.set_title('F1对照组 - 三种情绪AU均值对比', fontsize=14)
+    ax.set_xticks(x + width)
+    ax.set_xticklabels([au.replace('_r', '') for au in au_columns], rotation=45)
+    ax.legend()
     plt.tight_layout()
-    plt.savefig(output_dir / 'heatmap_f1_three_emotions.png', dpi=150)
+    plt.savefig(barplots_dir / 'barplot_au_mean_comparison.png', dpi=150)
     plt.close()
     
     # 2. 关键AU对比条形图
     key_aus = ['AU04_r', 'AU06_r', 'AU07_r', 'AU12_r', 'AU17_r']
     fig, ax = plt.subplots(figsize=(10, 6))
     x = np.arange(len(key_aus))
-    width = 0.25
     
-    for i, emotion in enumerate(['悲伤', '中性', '积极']):
+    for idx, emotion in enumerate(['悲伤', '中性', '积极']):
         values = [results_df.loc[emotion, au] for au in key_aus]
-        ax.bar(x + i*width, values, width, label=emotion)
+        ax.bar(x + idx*width, values, width, label=emotion, color=colors[idx])
     
-    ax.set_xlabel('Action Units')
-    ax.set_ylabel('激活强度')
-    ax.set_title('F1对照组 - 关键AU三情绪对比')
+    ax.set_xlabel('Action Units', fontsize=12)
+    ax.set_ylabel('激活强度', fontsize=12)
+    ax.set_title('F1对照组 - 关键AU三情绪对比', fontsize=14)
     ax.set_xticks(x + width)
-    ax.set_xticklabels(key_aus)
+    ax.set_xticklabels([au.replace('_r', '') for au in key_aus])
     ax.legend()
     plt.tight_layout()
-    plt.savefig(output_dir / 'barplot_f1_key_au_comparison.png', dpi=150)
+    plt.savefig(barplots_dir / 'barplot_key_au_comparison.png', dpi=150)
     plt.close()
+
+def create_boxplots(emotion_data, output_dir):
+    """创建箱线图"""
+    boxplots_dir = Path(output_dir) / 'boxplots'
+    boxplots_dir.mkdir(exist_ok=True)
     
-    # 3. 情绪差异热图
-    diff_matrix = pd.DataFrame(index=au_columns, columns=['悲伤-中性', '悲伤-积极', '中性-积极'])
-    for au in au_columns:
-        diff_matrix.loc[au, '悲伤-中性'] = results_df.loc['悲伤', au] - results_df.loc['中性', au]
-        diff_matrix.loc[au, '悲伤-积极'] = results_df.loc['悲伤', au] - results_df.loc['积极', au]
-        diff_matrix.loc[au, '中性-积极'] = results_df.loc['中性', au] - results_df.loc['积极', au]
+    key_aus = ['AU04_r', 'AU06_r', 'AU07_r', 'AU12_r', 'AU17_r']
+    fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+    axes = axes.flatten()
     
-    fig, ax = plt.subplots(figsize=(8, 10))
-    sns.heatmap(diff_matrix.astype(float), annot=True, fmt='.2f', cmap='RdBu_r',
-                center=0, ax=ax, cbar_kws={'label': '差异值'})
-    ax.set_title('F1对照组 - 情绪间AU差异热图', fontsize=14)
+    for idx, au in enumerate(key_aus):
+        data_to_plot = []
+        labels = []
+        for emotion in ['悲伤', '中性', '积极']:
+            data_to_plot.append(emotion_data[emotion][au].values)
+            labels.append(emotion)
+        
+        axes[idx].boxplot(data_to_plot, labels=labels)
+        axes[idx].set_title(f'{au.replace("_r", "")} 分布')
+        axes[idx].set_ylabel('激活强度')
+    
+    for idx in range(len(key_aus), len(axes)):
+        axes[idx].axis('off')
+    
+    plt.suptitle('F1对照组 - 关键AU分布箱线图', fontsize=16)
     plt.tight_layout()
-    plt.savefig(output_dir / 'heatmap_f1_emotion_differences.png', dpi=150)
+    plt.savefig(boxplots_dir / 'boxplot_key_au_distribution.png', dpi=150)
+    plt.close()
+
+def create_heatmaps(emotion_data, results_df, output_dir):
+    """创建热图"""
+    heatmaps_dir = Path(output_dir) / 'heatmaps'
+    heatmaps_dir.mkdir(exist_ok=True)
+    
+    # 1. 三情绪综合对比热图
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(results_df.T, annot=True, fmt='.2f', cmap='RdYlBu_r', 
+                center=0, ax=ax, cbar_kws={'label': 'AU Activation'})
+    ax.set_title('F1对照组 - 三种情绪AU激活热图', fontsize=14)
+    ax.set_xlabel('情绪类型')
+    ax.set_ylabel('Action Units')
+    plt.tight_layout()
+    plt.savefig(heatmaps_dir / 'heatmap_all_emotions_comparison.png', dpi=150)
     plt.close()
     
-    # 4. 雷达图
-    key_aus_radar = ['AU04_r', 'AU06_r', 'AU07_r', 'AU12_r', 'AU17_r']
-    angles = np.linspace(0, 2*np.pi, len(key_aus_radar), endpoint=False).tolist()
+    # 2. 悲伤vs积极差异热图
+    diff_sad_pos = results_df.loc['悲伤'] - results_df.loc['积极']
+    fig, ax = plt.subplots(figsize=(14, 2))
+    diff_df = pd.DataFrame(diff_sad_pos).T
+    diff_df.index = ['悲伤-积极']
+    sns.heatmap(diff_df, annot=True, fmt='.2f', cmap='RdBu_r', 
+                center=0, ax=ax, cbar_kws={'label': '差异值'})
+    ax.set_title('F1对照组 - 悲伤vs积极AU差异', fontsize=12)
+    plt.tight_layout()
+    plt.savefig(heatmaps_dir / 'heatmap_sad_vs_positive_diff.png', dpi=150)
+    plt.close()
+    
+    # 3. 各情绪单独热图
+    for emotion in ['悲伤', '中性', '积极']:
+        fig, ax = plt.subplots(figsize=(14, 2))
+        emotion_df = pd.DataFrame(results_df.loc[emotion]).T
+        emotion_df.index = [emotion]
+        sns.heatmap(emotion_df, annot=True, fmt='.2f', cmap='RdYlBu_r',
+                    center=0, ax=ax, cbar_kws={'label': '激活值'})
+        ax.set_title(f'F1对照组 - {emotion}情绪AU激活', fontsize=12)
+        plt.tight_layout()
+        plt.savefig(heatmaps_dir / f'heatmap_{emotion}.png', dpi=150)
+        plt.close()
+
+def create_radar(emotion_data, results_df, output_dir):
+    """创建雷达图"""
+    radar_dir = Path(output_dir) / 'radar'
+    radar_dir.mkdir(exist_ok=True)
+    
+    key_aus = ['AU04_r', 'AU06_r', 'AU07_r', 'AU12_r', 'AU17_r']
+    angles = np.linspace(0, 2*np.pi, len(key_aus), endpoint=False).tolist()
     angles += angles[:1]
     
     fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection='polar'))
     colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
     
     for idx, emotion in enumerate(['悲伤', '中性', '积极']):
-        values = [results_df.loc[emotion, au] for au in key_aus_radar]
+        values = [results_df.loc[emotion, au] for au in key_aus]
         values += values[:1]
         ax.plot(angles, values, 'o-', linewidth=2, label=emotion, color=colors[idx])
         ax.fill(angles, values, alpha=0.15, color=colors[idx])
     
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels([au.replace('_r', '') for au in key_aus_radar])
-    ax.set_ylim(0, results_df[key_aus_radar].max().max() * 1.2)
+    ax.set_xticklabels([au.replace('_r', '') for au in key_aus])
+    ax.set_ylim(0, results_df[key_aus].max().max() * 1.2)
     ax.set_title('F1对照组 - 三种情绪AU轮廓雷达图', fontsize=14, pad=20)
     ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.0))
     plt.tight_layout()
-    plt.savefig(output_dir / 'radar_f1_emotion_profile.png', dpi=150)
+    plt.savefig(radar_dir / 'radar_emotion_profile.png', dpi=150)
     plt.close()
+
+def create_time_series(emotion_data, output_dir):
+    """创建时间序列图"""
+    ts_dir = Path(output_dir) / 'time_series'
+    ts_dir.mkdir(exist_ok=True)
     
-    # 5. 时间序列对比（AU12 - 笑容）
-    fig, ax = plt.subplots(figsize=(12, 5))
+    key_aus = ['AU04_r', 'AU06_r', 'AU12_r']
+    
+    for au in key_aus:
+        fig, ax = plt.subplots(figsize=(12, 5))
+        for emotion in ['悲伤', '中性', '积极']:
+            data = emotion_data[emotion][au].values
+            target_len = min(1000, len(data))
+            indices = np.linspace(0, len(data)-1, target_len, dtype=int)
+            data_downsampled = data[indices]
+            time_sec = np.arange(len(data_downsampled)) * 0.033
+            ax.plot(time_sec, data_downsampled, label=emotion, alpha=0.7)
+        
+        ax.set_xlabel('时间 (秒)', fontsize=12)
+        ax.set_ylabel(f'{au.replace("_r", "")} 激活强度', fontsize=12)
+        ax.set_title(f'F1对照组 - {au.replace("_r", "")} 时间序列对比', fontsize=14)
+        ax.legend()
+        plt.tight_layout()
+        plt.savefig(ts_dir / f'timeseries_{au}.png', dpi=150)
+        plt.close()
+
+def save_raw_data(emotion_data, output_dir):
+    """保存原始数据"""
+    raw_dir = Path(output_dir) / 'raw_data'
+    raw_dir.mkdir(exist_ok=True)
+    
     for emotion, df in emotion_data.items():
-        au12_data = df['AU12_r'].values
-        # 下采样到相同长度
-        target_len = min(1000, len(au12_data))
-        indices = np.linspace(0, len(au12_data)-1, target_len, dtype=int)
-        au12_downsampled = au12_data[indices]
-        time_sec = np.arange(len(au12_downsampled)) * 0.033
-        ax.plot(time_sec, au12_downsampled, label=emotion, alpha=0.7)
+        key_cols = ['frame', 'timestamp', 'confidence'] + au_columns
+        df[key_cols].to_csv(raw_dir / f'{emotion}.csv', index=False, encoding='utf-8-sig')
+
+def create_statistics(emotion_data, results_df, output_dir):
+    """创建统计分析"""
+    stats_dir = Path(output_dir) / 'statistics'
+    stats_dir.mkdir(exist_ok=True)
     
-    ax.set_xlabel('时间 (秒)')
-    ax.set_ylabel('AU12激活强度')
-    ax.set_title('F1对照组 - AU12时间序列对比（嘴角上扬/笑容）')
-    ax.legend()
+    f_values = []
+    for au in au_columns:
+        sad_data = emotion_data['悲伤'][au].values
+        neu_data = emotion_data['中性'][au].values
+        pos_data = emotion_data['积极'][au].values
+        
+        f_stat, p_val = stats.f_oneway(sad_data, neu_data, pos_data)
+        f_values.append({'AU': au, 'F_value': f_stat, 'p_value': p_val})
+    
+    f_df = pd.DataFrame(f_values)
+    f_df = f_df.sort_values('F_value', ascending=False)
+    f_df.to_csv(stats_dir / 'au_emotion_statistics.csv', index=False, encoding='utf-8-sig')
+    
+    fig, ax = plt.subplots(figsize=(14, 6))
+    colors = ['red' if p < 0.001 else 'orange' if p < 0.01 else 'gray' 
+              for p in f_df['p_value']]
+    bars = ax.bar(range(len(f_df)), f_df['F_value'], color=colors)
+    ax.set_xticks(range(len(f_df)))
+    ax.set_xticklabels([au.replace('_r', '') for au in f_df['AU']], rotation=45)
+    ax.set_ylabel('F值', fontsize=12)
+    ax.set_title('F1对照组 - 三情绪ANOVA F值 (红色:p<0.001, 橙色:p<0.01)', fontsize=14)
+    ax.axhline(y=stats.f.ppf(0.99, 2, 1000), color='red', linestyle='--', alpha=0.5)
     plt.tight_layout()
-    plt.savefig(output_dir / 'timeseries_f1_au12_comparison.png', dpi=150)
+    plt.savefig(stats_dir / 'statistics_anova_f_values.png', dpi=150)
     plt.close()
-    
-    return diff_matrix
 
-def generate_report(emotion_data, results_df, diff_matrix, output_dir):
+def generate_report(emotion_data, results_df, output_dir):
     """生成分析报告"""
-    output_dir = Path(output_dir)
+    output_path = Path(output_dir) / 'analysis_report.txt'
     
-    # 找出最具区分度的AU
-    discrimination = diff_matrix.abs().mean(axis=1).sort_values(ascending=False)
+    f_values = []
+    for au in au_columns:
+        sad_data = emotion_data['悲伤'][au].values
+        neu_data = emotion_data['中性'][au].values
+        pos_data = emotion_data['积极'][au].values
+        f_stat, p_val = stats.f_oneway(sad_data, neu_data, pos_data)
+        f_values.append((au, f_stat, p_val))
     
-    report = f"""# F1对照组三种情绪对比分析报告
+    f_values.sort(key=lambda x: x[1], reverse=True)
+    
+    report = f"""================================================================================
+F1对照组三种情绪AU特征分析报告
+日期: {pd.Timestamp.now().strftime('%Y-%m-%d')}
+================================================================================
 
-## 1. 数据概况
+1. 数据概况
+-----------
+情绪类型: 悲伤、中性、积极
+数据来源: OpenFace 2.0 AU强度值
 
-| 情绪 | 帧数 |
-|------|------|
-| 悲伤 | {len(emotion_data['悲伤'])} |
-| 中性 | {len(emotion_data['中性'])} |
-| 积极 | {len(emotion_data['积极'])} |
+样本量:
+  • 悲伤: {len(emotion_data['悲伤'])} 帧
+  • 中性: {len(emotion_data['中性'])} 帧
+  • 积极: {len(emotion_data['积极'])} 帧
 
-## 2. 关键发现
-
-### 2.1 最具区分度的AU（按跨情绪差异排序）
-
-| AU | 平均差异 |
-|------|----------|
+2. 核心发现
+-----------
+最具区分度的AU (按F值排序):
 """
     
-    for au, diff in discrimination.head(5).items():
-        report += f"| {au} | {diff:.3f} |\n"
+    for au, f_val, p_val in f_values[:10]:
+        sig = '***' if p_val < 0.001 else '**' if p_val < 0.01 else '*' if p_val < 0.05 else ''
+        report += f"  {au:10s}: F={f_val:8.1f}, p={p_val:.2e} {sig}\n"
     
     report += f"""
-### 2.2 各情绪AU均值
+3. 各情绪AU均值
+---------------
+"""
+    for emotion in ['悲伤', '中性', '积极']:
+        report += f"\n{emotion}:\n"
+        for au in ['AU04_r', 'AU06_r', 'AU07_r', 'AU12_r', 'AU17_r']:
+            report += f"  {au}: {results_df.loc[emotion, au]:.3f}\n"
+    
+    report += """
+4. 结论
+-------
+F1对照组（女性）在三种情绪下表现出清晰的AU激活模式差异，
+可作为女性对照组"典型情绪表达"的参考标准。
 
-{results_df.round(3).to_markdown()}
-
-### 2.3 关键观察
-
-1. **AU07 (眼睑收紧)**: 
-   - 悲伤: {results_df.loc['悲伤', 'AU07_r']:.3f}
-   - 中性: {results_df.loc['中性', 'AU07_r']:.3f}
-   - 积极: {results_df.loc['积极', 'AU07_r']:.3f}
-
-2. **AU12 (嘴角上扬/笑容)** :
-   - 悲伤: {results_df.loc['悲伤', 'AU12_r']:.3f}
-   - 中性: {results_df.loc['中性', 'AU12_r']:.3f}
-   - 积极: {results_df.loc['积极', 'AU12_r']:.3f}
-
-3. **AU04 (皱眉)**:
-   - 悲伤: {results_df.loc['悲伤', 'AU04_r']:.3f}
-   - 中性: {results_df.loc['中性', 'AU04_r']:.3f}
-   - 积极: {results_df.loc['积极', 'AU04_r']:.3f}
-
-## 3. 与M1/M2对比
-
-F1（女性）与M1/M2（男性）的差异:
-- AU07激活普遍较低（女性特征）
-- AU12在积极情绪下表现
-
-## 4. 结论
-
-F1对照组作为女性对照样本，展示了女性特有的AU激活模式，
-可作为性别差异分析的基准。
-
----
-生成时间: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}
+================================================================================
 """
     
-    with open(output_dir / 'analysis_report.md', 'w', encoding='utf-8') as f:
+    with open(output_path, 'w', encoding='utf-8') as f:
         f.write(report)
     
-    print(f"\n报告已保存: {output_dir / 'analysis_report.md'}")
+    print(f"报告已保存: {output_path}")
 
 def main():
-    # 创建输出目录
-    timestamp = pd.Timestamp.now().strftime('%Y-%m-%d')
-    output_dir = Path(f'/root/.openclaw/workspace/老年失智人群预警模式科研项目/analysis_results/{timestamp}_F1_三种情绪对比')
+    output_dir = Path('/root/.openclaw/workspace/老年失智人群预警模式科研项目/analysis_results/2026-02-18_F1_三种情绪对比')
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    print("\n开始分析...")
+    print("="*70)
+    print("F1对照组三种情绪对比分析")
+    print("="*70)
     
-    # 执行分析
     emotion_data, results_df = analyze_f1_cross_emotion()
     
-    # 创建可视化
-    diff_matrix = create_visualizations(emotion_data, results_df, output_dir)
+    print("\n生成条形图...")
+    create_barplots(emotion_data, results_df, output_dir)
     
-    # 生成报告
-    generate_report(emotion_data, results_df, diff_matrix, output_dir)
+    print("生成箱线图...")
+    create_boxplots(emotion_data, output_dir)
     
-    # 保存原始数据
-    results_df.to_csv(output_dir / 'f1_au_means.csv', encoding='utf-8-sig')
-    diff_matrix.to_csv(output_dir / 'f1_emotion_differences.csv', encoding='utf-8-sig')
+    print("生成热图...")
+    create_heatmaps(emotion_data, results_df, output_dir)
+    
+    print("生成雷达图...")
+    create_radar(emotion_data, results_df, output_dir)
+    
+    print("生成时间序列图...")
+    create_time_series(emotion_data, output_dir)
+    
+    print("保存原始数据...")
+    save_raw_data(emotion_data, output_dir)
+    
+    print("生成统计分析...")
+    create_statistics(emotion_data, results_df, output_dir)
+    
+    print("生成分析报告...")
+    generate_report(emotion_data, results_df, output_dir)
     
     print(f"\n{'='*70}")
     print(f"分析完成！结果保存在: {output_dir}")
