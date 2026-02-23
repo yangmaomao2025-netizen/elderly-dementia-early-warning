@@ -1,0 +1,75 @@
+================================================================================
+患者组 vs 正常对照组 统计检验报告
+分析日期: 2026-02-23
+================================================================================
+
+1. 样本信息
+-----------
+患者组被试: ZFL, MHD, WGL, ZJK (n=4)
+正常对照组: M1, M2, F1, F2 (n=4)
+分析AU数: 17
+
+2. 统计方法
+-----------
+组间比较: 独立样本t检验
+效应量: Cohen's d
+显著性水平: α = 0.05
+
+3. 显著差异汇总
+---------------
+总显著差异AU数: 6 / 51
+
+按情绪分类:
+  悲伤: 3 个AU显著差异
+  积极: 3 个AU显著差异
+  中性: 0 个AU显著差异
+
+4. Top 显著差异AU
+-----------------
+
+悲伤情绪:
+  1. AU20_r: p=1.41e-02, d=-2.42 (正常组更高)
+  2. AU26_r: p=1.77e-02, d=-2.29 (正常组更高)
+  3. AU23_r: p=1.93e-02, d=-2.24 (正常组更高)
+
+积极情绪:
+  1. AU17_r: p=8.06e-03, d=-2.75 (正常组更高)
+  2. AU15_r: p=1.10e-02, d=-2.57 (正常组更高)
+  3. AU26_r: p=4.39e-02, d=-1.80 (正常组更高)
+
+中性情绪:
+
+5. 主要发现
+-----------
+
+正常组显著高表达的AU:
+  悲伤: AU20_r, AU26_r, AU23_r
+  积极: AU17_r, AU15_r, AU26_r
+
+6. 输出文件清单
+---------------
+statistics/
+  - all_subject_emotion_au_means.csv
+  - group_comparison_statistics.csv
+
+heatmaps/
+  - heatmap_effect_size_悲伤.png
+  - heatmap_effect_size_积极.png
+  - heatmap_effect_size_中性.png
+
+barplots/
+  - barplot_significant_au_悲伤.png
+  - barplot_significant_au_积极.png
+  - barplot_significant_au_中性.png
+
+boxplots/
+  - boxplot_group_comparison_悲伤.png
+  - boxplot_group_comparison_积极.png
+  - boxplot_group_comparison_中性.png
+
+volcano/
+  - volcano_悲伤.png
+  - volcano_积极.png
+  - volcano_中性.png
+
+================================================================================

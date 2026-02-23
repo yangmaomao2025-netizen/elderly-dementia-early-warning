@@ -1,0 +1,57 @@
+================================================================================
+三情绪AU特征分析报告
+被试ID: F1
+日期: 2026-02-23
+================================================================================
+
+1. 数据概况
+-----------
+情绪类型: 悲伤、积极、中性
+数据来源: OpenFace 2.0 AU强度值
+
+样本量:
+  • 悲伤: 20334 帧
+  • 积极: 7774 帧  
+  • 中性: 3831 帧
+
+2. 核心发现
+-----------
+最具区分度的AU (按F值排序):
+  1. AU10_r    : F= 10058.8, p=0.00e+00 ***
+  2. AU14_r    : F=  2475.7, p=0.00e+00 ***
+  3. AU06_r    : F=  2189.4, p=0.00e+00 ***
+  4. AU12_r    : F=  2024.1, p=0.00e+00 ***
+  5. AU04_r    : F=  1783.2, p=0.00e+00 ***
+
+3. 情绪特异性模式
+-----------------
+
+中性情绪特征:
+  • 所有AU强度普遍较低
+
+4. 输出文件清单
+---------------
+heatmaps/
+  - heatmap_悲伤.png
+  - heatmap_积极.png
+  - heatmap_中性.png
+  - heatmap_all_emotions_comparison.png
+  - heatmap_sad_vs_positive_diff.png
+
+barplots/
+  - barplot_au_mean_comparison.png
+  - barplot_key_au_comparison.png
+
+boxplots/
+  - boxplot_key_au_distribution.png
+
+radar/
+  - radar_emotion_profile.png
+
+time_series/
+  - timeseries_[Top3_AU].png
+
+statistics/
+  - au_emotion_statistics.csv
+
+================================================================================

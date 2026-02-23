@@ -1,0 +1,56 @@
+================================================================================
+跨被试组分析报告
+组名: 正常对照组
+被试: M1, M2, F1, F2
+日期: 2026-02-23
+================================================================================
+
+1. 数据概况
+-----------
+被试数量: 4
+被试列表: M1, M2, F1, F2
+情绪类型: 悲伤、积极、中性
+
+2. 各情绪组内被试差异
+---------------------
+
+悲伤情绪:
+  平均变异系数: 0.351
+  变异最大AU: AU12_r (CV=0.720)
+  变异最小AU: AU23_r (CV=0.143)
+
+积极情绪:
+  平均变异系数: 0.411
+  变异最大AU: AU12_r (CV=0.941)
+  变异最小AU: AU15_r (CV=0.161)
+
+中性情绪:
+  平均变异系数: 0.387
+  变异最大AU: AU20_r (CV=0.617)
+  变异最小AU: AU05_r (CV=0.133)
+
+3. 组内一致性评估
+-----------------
+  中性情绪一致性: 中 (平均CV=0.387)
+  悲伤情绪一致性: 中 (平均CV=0.351)
+  积极情绪一致性: 中 (平均CV=0.411)
+
+4. 输出文件清单
+---------------
+heatmaps/
+  - heatmap_subject_au_悲伤.png
+  - heatmap_subject_au_积极.png
+  - heatmap_subject_au_中性.png
+  - heatmap_group_emotion_comparison.png
+  - heatmap_inter_subject_cv.png
+
+barplots/
+  - barplot_subject_comparison_悲伤.png
+  - barplot_subject_comparison_积极.png
+  - barplot_subject_comparison_中性.png
+
+statistics/
+  - subject_emotion_au_means.csv
+  - emotion_subject_variability.csv
+
+================================================================================
