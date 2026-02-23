@@ -93,8 +93,15 @@ analysis_results/2025-02-23_ZFL_三种情绪对比/raw_data/
 - [x] ZFL_三种情绪对比
 - [x] MHD/WGL/ZJK_三种情绪对比
 - [x] 17×17 AU相关性热图（74个）
-- [x] 12个跨被试情绪对比分析（完整图表）
-- [x] 代码上传 GitHub
+- [x] **12个跨被试情绪对比分析（完整图表）** ⭐ 重点
+  - 正常组：中性/悲伤/积极情绪对比 (M1,M2,F1,F2)
+  - 患者组：中性/悲伤/积极情绪对比 (ZFL,MHD,WGL,ZJK)
+  - 跨组女性：中性/悲伤/积极情绪对比 (F1,F2,MHD)
+  - 跨组男性：中性/悲伤/积极情绪对比 (M1,M2,ZFL,WGL,ZJK)
+  - 每个分析包含：heatmaps, barplots, boxplots, radar, time_series, statistics
+- [x] 确认核心数据路径（患者6人 + 正常3人）
+- [x] 创建 PROJECT_MEMORY.md 项目记忆文件
+- [x] 代码上传 GitHub (v3.5)
 
 ---
 
@@ -121,16 +128,29 @@ analysis_results/2025-02-23_ZFL_三种情绪对比/raw_data/
 
 - ✅ Telegram: @superxiaolongxiabot
 - ✅ 钉钉: 群内 @机器人
+- ✅ 飞书: 群内 @机器人
 
 ---
 
 ## 七、更新日志
 
-### 2026-02-23/24
-- 确认核心数据路径（患者6人 + 正常3人）
-- 创建项目记忆文件
-- 修复 Telegram 渠道配置
-- 安装钉钉插件
+### 2026-02-23/24 (上海时间凌晨)
+**数据分析：**
+- 完成12个跨被试情绪对比分析（参照2025-02-17_悲伤情绪_2M1F对比格式）
+- 每个分析包含完整图表：heatmaps, barplots, boxplots, radar, time_series
+- 确认核心数据路径：患者组6人（M1/M2/M3/F1/F2/F3）+ 正常组3人（M1/M2/F1）
+
+**系统配置：**
+- 安装并配置钉钉插件（Stream模式）
+- 安装并配置飞书插件
+- 修复 Telegram 渠道配置（dmPolicy: "open", allowFrom: ["*"]）
+
+**文档更新：**
+- 创建 PROJECT_MEMORY.md 项目记忆文件
+- GitHub 提交：v3.5（12个跨被试分析图表）
+
+**待确认：**
+- ZFL/MHD/WGL/ZJK 与 患者M1/M2/M3/F1/F2/F3 的对应关系
 
 ---
 
