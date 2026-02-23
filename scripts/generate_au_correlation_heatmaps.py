@@ -54,9 +54,11 @@ def create_au_correlation_heatmap(csv_file, output_path):
                 cbar_kws={'label': 'Correlation'},
                 annot_kws={'size': 8})
     
-    # 获取文件名用于标题
+    # 获取文件名用于标题 (使用英文)
     file_name = os.path.basename(csv_file).replace('.csv', '')
-    ax.set_title(f'{file_name} - AU Correlation Matrix (17×17)', 
+    # 将中文转换为英文
+    file_name_en = file_name.replace('悲伤', '_Sad').replace('积极', '_Positive').replace('中性', '_Neutral')
+    ax.set_title(f'{file_name_en} - AU Correlation Matrix (17×17)', 
                 fontsize=14, fontweight='bold')
     
     plt.tight_layout()
