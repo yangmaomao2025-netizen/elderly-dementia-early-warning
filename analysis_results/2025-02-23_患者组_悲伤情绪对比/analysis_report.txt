@@ -1,48 +1,72 @@
 ================================================================================
-跨被试单情绪对比分析报告
-分析名称: 患者组_悲伤情绪对比
-情绪类型: 悲伤
-分析日期: 2026-02-23
+患者组_悲伤情绪对比 跨被试对比分析报告
+日期: 2026-02-23
 ================================================================================
 
-1. 被试信息
------------
-被试列表: ZFL, MHD, WGL, ZJK
-被试数量: 4
-总帧数: 60158
+1. 数据概况
+----------------------------------------
+情绪类型: 悲伤
+数据来源: OpenFace 2.0 AU强度值
 
-2. AU变异情况
--------------
-变异系数 (CV) 统计:
-  平均CV: 0.391
-  最大CV: 0.722 (AU07_r)
-  最小CV: 0.130 (AU15_r)
+样本量:
+  • ZFL (patient): 19952 帧
+  • MHD (patient): 10018 帧
+  • WGL (patient): 10010 帧
+  • ZJK (patient): 20178 帧
 
-Top 5 变异最大AU:
-  6. AU07_r: CV=0.722, range=[0.41, 3.14]
-  5. AU06_r: CV=0.690, range=[0.16, 2.00]
-  8. AU10_r: CV=0.678, range=[0.33, 1.97]
-  10. AU14_r: CV=0.633, range=[0.23, 1.32]
-  3. AU04_r: CV=0.598, range=[0.22, 1.49]
+2. 核心发现
+----------------------------------------
+最具个体差异的AU (按方差排序):
+  1. AU07: var=1.181
+  2. AU10: var=0.576
+  3. AU06: var=0.551
+  4. AU25: var=0.393
+  5. AU14: var=0.299
 
-3. 组内一致性
--------------
-一致性评估: 中
-平均变异系数: 0.391
+3. 被试特异性模式
+----------------------------------------
 
-4. 输出文件
------------
-statistics/
-  - subject_au_means.csv
-  - au_variability.csv
+ZFL (patient) 特征:
+  • AU07_r: 0.732
+  • AU04_r: 0.693
+  • AU06_r: 0.622
 
+MHD (patient) 特征:
+  • AU07_r: 3.142
+  • AU06_r: 1.997
+  • AU10_r: 1.970
+
+WGL (patient) 特征:
+  • AU07_r: 1.586
+  • AU10_r: 1.219
+  • AU06_r: 1.205
+
+ZJK (patient) 特征:
+  • AU25_r: 0.441
+  • AU07_r: 0.407
+  • AU26_r: 0.374
+
+4. 输出文件清单
+----------------------------------------
 heatmaps/
-  - heatmap_subject_au.png
+  - heatmap_*.png                (个体AU激活热力图)
+  - heatmap_*subjects.png        (多被试对比热力图)
+  - heatmap_gender_diff.png      (分组差异热力图)
+  - correlation_*.png            (17×17 AU相关性矩阵)
 
 barplots/
-  - barplot_au_comparison.png
+  - barplot_*subjects_comparison.png
 
 boxplots/
-  - boxplot_au_distribution.png
+  - boxplot_key_au_distribution.png
+
+radar/
+  - radar_individual_profiles.png
+
+time_series/
+  - timeseries_AU*.png
+
+statistics/
+  - au_statistics.csv
 
 ================================================================================

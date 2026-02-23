@@ -1,48 +1,72 @@
 ================================================================================
-跨被试单情绪对比分析报告
-分析名称: 患者组_积极情绪对比
-情绪类型: 积极
-分析日期: 2026-02-23
+患者组_积极情绪对比 跨被试对比分析报告
+日期: 2026-02-23
 ================================================================================
 
-1. 被试信息
------------
-被试列表: ZFL, MHD, WGL, ZJK
-被试数量: 4
-总帧数: 24485
+1. 数据概况
+----------------------------------------
+情绪类型: 积极
+数据来源: OpenFace 2.0 AU强度值
 
-2. AU变异情况
--------------
-变异系数 (CV) 统计:
-  平均CV: 0.375
-  最大CV: 0.777 (AU04_r)
-  最小CV: 0.091 (AU20_r)
+样本量:
+  • ZFL (patient): 7187 帧
+  • MHD (patient): 3643 帧
+  • WGL (patient): 3647 帧
+  • ZJK (patient): 10008 帧
 
-Top 5 变异最大AU:
-  3. AU04_r: CV=0.777, range=[0.11, 1.20]
-  6. AU07_r: CV=0.774, range=[0.42, 2.89]
-  8. AU10_r: CV=0.732, range=[0.34, 2.09]
-  9. AU12_r: CV=0.726, range=[0.13, 1.48]
-  10. AU14_r: CV=0.690, range=[0.24, 1.71]
+2. 核心发现
+----------------------------------------
+最具个体差异的AU (按方差排序):
+  1. AU07: var=0.827
+  2. AU06: var=0.508
+  3. AU10: var=0.470
+  4. AU14: var=0.403
+  5. AU12: var=0.275
 
-3. 组内一致性
--------------
-一致性评估: 中
-平均变异系数: 0.375
+3. 被试特异性模式
+----------------------------------------
 
-4. 输出文件
------------
-statistics/
-  - subject_au_means.csv
-  - au_variability.csv
+ZFL (patient) 特征:
+  • AU06_r: 0.878
+  • AU04_r: 0.684
+  • AU07_r: 0.631
 
+MHD (patient) 特征:
+  • AU07_r: 2.892
+  • AU10_r: 2.090
+  • AU06_r: 1.932
+
+WGL (patient) 特征:
+  • AU06_r: 1.644
+  • AU12_r: 1.477
+  • AU14_r: 1.176
+
+ZJK (patient) 特征:
+  • AU07_r: 0.425
+  • AU25_r: 0.422
+  • AU26_r: 0.369
+
+4. 输出文件清单
+----------------------------------------
 heatmaps/
-  - heatmap_subject_au.png
+  - heatmap_*.png                (个体AU激活热力图)
+  - heatmap_*subjects.png        (多被试对比热力图)
+  - heatmap_gender_diff.png      (分组差异热力图)
+  - correlation_*.png            (17×17 AU相关性矩阵)
 
 barplots/
-  - barplot_au_comparison.png
+  - barplot_*subjects_comparison.png
 
 boxplots/
-  - boxplot_au_distribution.png
+  - boxplot_key_au_distribution.png
+
+radar/
+  - radar_individual_profiles.png
+
+time_series/
+  - timeseries_AU*.png
+
+statistics/
+  - au_statistics.csv
 
 ================================================================================

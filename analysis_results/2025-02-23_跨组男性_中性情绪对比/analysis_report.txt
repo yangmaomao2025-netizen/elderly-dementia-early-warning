@@ -1,48 +1,78 @@
 ================================================================================
-跨被试单情绪对比分析报告
-分析名称: 跨组男性_中性情绪对比
-情绪类型: 中性
-分析日期: 2026-02-23
+跨组男性_中性情绪对比 跨被试对比分析报告
+日期: 2026-02-23
 ================================================================================
 
-1. 被试信息
------------
-被试列表: M1_正常, M2_正常, ZFL_患者, WGL_患者, ZJK_患者
-被试数量: 5
-总帧数: 13203
+1. 数据概况
+----------------------------------------
+情绪类型: 中性
+数据来源: OpenFace 2.0 AU强度值
 
-2. AU变异情况
--------------
-变异系数 (CV) 统计:
-  平均CV: 0.521
-  最大CV: 0.930 (AU10_r)
-  最小CV: 0.193 (AU05_r)
+样本量:
+  • M1 (normal): 1562 帧
+  • M2 (normal): 4401 帧
+  • ZFL (patient): 3630 帧
+  • WGL (patient): 1806 帧
+  • ZJK (patient): 1804 帧
 
-Top 5 变异最大AU:
-  8. AU10_r: CV=0.930, range=[0.01, 2.74]
-  11. AU15_r: CV=0.875, range=[0.07, 0.54]
-  10. AU14_r: CV=0.806, range=[0.04, 1.01]
-  9. AU12_r: CV=0.754, range=[0.03, 0.77]
-  13. AU20_r: CV=0.715, range=[0.06, 0.37]
+2. 核心发现
+----------------------------------------
+最具个体差异的AU (按方差排序):
+  1. AU10: var=1.132
+  2. AU07: var=0.704
+  3. AU15: var=0.596
+  4. AU26: var=0.469
+  5. AU17: var=0.356
 
-3. 组内一致性
--------------
-一致性评估: 低
-平均变异系数: 0.521
+3. 被试特异性模式
+----------------------------------------
 
-4. 输出文件
------------
-statistics/
-  - subject_au_means.csv
-  - au_variability.csv
+M1 (normal) 特征:
+  • AU10_r: 2.744
+  • AU07_r: 2.202
+  • AU06_r: 1.505
 
+M2 (normal) 特征:
+  • AU10_r: 1.832
+  • AU07_r: 1.125
+  • AU04_r: 1.094
+
+ZFL (patient) 特征:
+  • AU04_r: 0.648
+  • AU07_r: 0.508
+  • AU26_r: 0.392
+
+WGL (patient) 特征:
+  • AU07_r: 1.775
+  • AU06_r: 1.358
+  • AU14_r: 1.013
+
+ZJK (patient) 特征:
+  • AU25_r: 0.550
+  • AU17_r: 0.458
+  • AU06_r: 0.374
+
+4. 输出文件清单
+----------------------------------------
 heatmaps/
-  - heatmap_subject_au.png
+  - heatmap_*.png                (个体AU激活热力图)
+  - heatmap_*subjects.png        (多被试对比热力图)
+  - heatmap_gender_diff.png      (分组差异热力图)
+  - correlation_*.png            (17×17 AU相关性矩阵)
 
 barplots/
-  - barplot_au_comparison.png
+  - barplot_*subjects_comparison.png
 
 boxplots/
-  - boxplot_au_distribution.png
+  - boxplot_key_au_distribution.png
+
+radar/
+  - radar_individual_profiles.png
+
+time_series/
+  - timeseries_AU*.png
+
+statistics/
+  - au_statistics.csv
 
 ================================================================================
