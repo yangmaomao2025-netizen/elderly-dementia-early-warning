@@ -37,13 +37,10 @@ def create_au_correlation_heatmap(csv_file, output_path):
     # 计算相关性矩阵
     corr_matrix = au_data.corr()
     
-    # 创建热图
+    # 创建热图（完整矩阵，不遮住上三角）
     fig, ax = plt.subplots(figsize=(14, 12))
     
-    mask = np.triu(np.ones_like(corr_matrix, dtype=bool), k=1)  # 只显示下三角
-    
     sns.heatmap(corr_matrix, 
-                mask=mask,
                 annot=True, 
                 fmt='.2f', 
                 cmap='RdBu_r', 
