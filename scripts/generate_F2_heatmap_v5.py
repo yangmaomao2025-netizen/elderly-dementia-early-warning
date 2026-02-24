@@ -163,11 +163,11 @@ def main():
     
     # 水平白线：分隔4个单元（在行方向）
     for i in range(1, 4):
-        ax.axhline(y=i*17, color='white', linewidth=1, linestyle='--')
+        ax.axhline(y=i*17, color='white', linewidth=2)
     
     # 垂直虚线：分隔 F2_中性 | F2_积极前60秒 | F2_积极后60秒（在列方向）
-    ax.axvline(x=15, color='white', linewidth=2)
-    ax.axvline(x=30, color='white', linewidth=2)
+    ax.axvline(x=15, color='white', linewidth=1, linestyle='--')
+    ax.axvline(x=30, color='white', linewidth=1, linestyle='--')
     
     # 添加标签说明
     ax.text(7.5, 35, 'N', ha='center', va='center', fontsize=12, color='black', fontweight='bold')
