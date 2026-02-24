@@ -151,15 +151,29 @@ def main():
     sns.heatmap(final_heatmap, 
                 cmap='RdBu_r',
                 center=0,
-                xticklabels=col_labels[::2],
-                yticklabels=row_labels,
+                xticklabels=False,  # 关闭默认x轴标签
+                yticklabels=False,  # 关闭默认y轴标签
                 cbar_kws={'label': 'AU Intensity Sum'},
                 ax=ax)
     
+    # 设置x轴刻度：在每个单元的中心显示标签
+    # 4个单元，每单元17列，中心位置：8.5, 25.5, 42.5, 59.5
+    unit_centers = [8.5, 25.5, 42.5, 59.5]
+    unit_labels = ['Unit 1\n(1-15s)', 'Unit 2\n(16-30s)', 'Unit 3\n(31-45s)', 'Unit 4\n(46-60s)']
+    ax.set_xticks(unit_centers)
+    ax.set_xticklabels(unit_labels, fontsize=10)
+    
+    # 设置y轴刻度：在每个部分的中心显示标签
+    # 3个部分，每部分15行，中心位置：7.5, 22.5, 37.5
+    part_centers = [7.5, 22.5, 37.5]
+    part_labels = ['N\n(Neutral)', 'P1\n(Positive 0-60s)', 'P2\n(Positive 60-120s)']
+    ax.set_yticks(part_centers)
+    ax.set_yticklabels(part_labels, fontsize=10, rotation=0)
+    
     ax.set_title('F2 AU Heatmap (45 × 68)\nHeight: 45 rows (3 parts × 15s) | Width: 68 cols (4 units × 17 AU)', 
                  fontsize=14, fontweight='bold')
-    ax.set_xlabel('Width: 68 cols (4 units × 17 AU)', fontsize=12)
-    ax.set_ylabel('Height: 45 rows (N | P1 | P2)', fontsize=12)
+    ax.set_xlabel('Width: 68 cols (4 units × 17 AU) - Each unit shows 1-15s within that time segment', fontsize=10)
+    ax.set_ylabel('Height: 45 rows (3 parts: N | P1 | P2)', fontsize=10)
     
     # 水平白线：分隔 F2_中性 | F2_积极前60秒 | F2_积极后60秒（在行边界）
     # 行0-14是N，行15-29是P1，行30-44是P2
@@ -172,11 +186,6 @@ def main():
     # 分隔线在列的边界：16.5, 33.5, 50.5
     for x in [16.5, 33.5, 50.5]:
         ax.axvline(x=x, color='white', linewidth=1, linestyle='--')
-    
-    # 添加标签说明
-    ax.text(34, 7.5, 'N (Neutral)', ha='center', va='center', fontsize=10, color='black', fontweight='bold')
-    ax.text(34, 22.5, 'P1 (Positive 0-60s)', ha='center', va='center', fontsize=10, color='black', fontweight='bold')
-    ax.text(34, 37.5, 'P2 (Positive 60-120s)', ha='center', va='center', fontsize=10, color='black', fontweight='bold')
     
     plt.tight_layout()
     
