@@ -161,13 +161,17 @@ def main():
     ax.set_xlabel('Width: 68 cols (4 units × 17 AU)', fontsize=12)
     ax.set_ylabel('Height: 45 rows (N | P1 | P2)', fontsize=12)
     
-    # 水平白线：分隔 F2_中性 | F2_积极前60秒 | F2_积极后60秒（在行方向）
-    ax.axhline(y=15, color='white', linewidth=2)
-    ax.axhline(y=30, color='white', linewidth=2)
+    # 水平白线：分隔 F2_中性 | F2_积极前60秒 | F2_积极后60秒（在行边界）
+    # 行0-14是N，行15-29是P1，行30-44是P2
+    # 分隔线在行的边界：14.5和29.5
+    ax.axhline(y=14.5, color='white', linewidth=2)
+    ax.axhline(y=29.5, color='white', linewidth=2)
     
-    # 垂直虚线：分隔4个单元（在列方向）
-    for i in range(1, 4):
-        ax.axvline(x=i*17, color='white', linewidth=1, linestyle='--')
+    # 垂直虚线：分隔4个单元（在列边界）
+    # 每个单元17列：列0-16, 17-33, 34-50, 51-67
+    # 分隔线在列的边界：16.5, 33.5, 50.5
+    for x in [16.5, 33.5, 50.5]:
+        ax.axvline(x=x, color='white', linewidth=1, linestyle='--')
     
     # 添加标签说明
     ax.text(34, 7.5, 'N (Neutral)', ha='center', va='center', fontsize=10, color='black', fontweight='bold')
